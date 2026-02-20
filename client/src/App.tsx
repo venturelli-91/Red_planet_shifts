@@ -28,7 +28,7 @@ function Nav() {
 			<Toolbar>
 				<Typography
 					variant="h6"
-					sx={{ mr: 4 }}>
+					sx={{ mr: 4, letterSpacing: "0.04em", color: "#e8612c" }}>
 					Red Planet Staffing
 				</Typography>
 				<Tabs
@@ -55,8 +55,8 @@ export default function App() {
 			<Nav />
 			<Container
 				maxWidth="lg"
-				sx={{ mt: 4 }}>
-				<Box sx={{ bgcolor: "rgba(255,255,255,0.88)", borderRadius: 2, p: 2 }}>
+				sx={{ mt: 4, pb: 4 }}>
+				<Box sx={{ p: 1 }}>
 					<Routes>
 						<Route
 							path="/"

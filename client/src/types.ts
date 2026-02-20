@@ -1,26 +1,26 @@
 export interface Workplace {
   id: string
   name: string
-  active: boolean
+  address: string
   createdAt: string
 }
 
 export interface Worker {
   id: string
   name: string
-  active: boolean
+  trade: string
   createdAt: string
 }
-
-export type ShiftStatus = 'open' | 'claimed' | 'completed'
 
 export interface Shift {
   id: string
   workplaceId: string
   workerId: string | null
-  startTime: string
-  endTime: string
-  status: ShiftStatus
+  start: string
+  end: string
+  trade: string
+  cancelled: boolean
+  createdAt: string
   workplace?: Workplace
   worker?: Worker | null
 }

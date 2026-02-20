@@ -1,4 +1,4 @@
-import type { Shift, ShiftStatus, Worker, Workplace } from '../types'
+import type { Shift, Worker, Workplace } from '../types'
 
 const BASE = '/api'
 
@@ -19,14 +19,15 @@ export const api = {
     list: () => request<Worker[]>('/workers'),
   },
   shifts: {
-    list: (status?: ShiftStatus) =>
-      request<Shift[]>(`/shifts${status ? `?status=${status}` : ''}`),
-    create: (body: { workplaceId: string; startTime: string; endTime: string }) =>
+    list: () => request<Shift[]>('/shifts'),
+    create: (body: { workplaceId: string; start: string; end: string; trade: string }) =>
       request<Shift>('/shifts', { method: 'POST', body: JSON.stringify(body) }),
     claim: (id: string, workerId: string) =>
       request<Shift>(`/shifts/${id}/claim`, {
-        method: 'PATCH',
+        method: 'POST',
         body: JSON.stringify({ workerId }),
       }),
+    cancel: (id: string) =>
+      request<Shift>(`/shifts/${id}/cancel`, { method: 'POST' }),
   },
 }
