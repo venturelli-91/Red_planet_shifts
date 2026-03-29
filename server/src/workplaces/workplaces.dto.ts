@@ -1,6 +1,6 @@
-import { IsString } from "class-validator";
+import { IsString, IsNotEmpty } from "class-validator";
 
 export class CreateWorkplaceDto {
-	@IsString() name: string;
-	@IsString() address: string;
+	@IsString() @IsNotEmpty() name: string;
+	@IsString() @IsNotEmpty() address: string;
 }

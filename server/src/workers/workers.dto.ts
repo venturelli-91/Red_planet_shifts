@@ -1,6 +1,6 @@
-import { IsString } from "class-validator";
+import { IsString, IsNotEmpty } from "class-validator";
 
 export class CreateWorkerDto {
-	@IsString() name: string;
-	@IsString() trade: string;
+	@IsString() @IsNotEmpty() name: string;
+	@IsString() @IsNotEmpty() trade: string;
 }

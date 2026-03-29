@@ -1,12 +1,12 @@
-import { IsString, IsDateString } from 'class-validator'
+import { IsString, IsNotEmpty, IsDateString, IsUUID } from 'class-validator'
 
 export class CreateShiftDto {
-  @IsDateString() start: string
-  @IsDateString() end: string
-  @IsString() trade: string
-  @IsString() workplaceId: string
+  @IsDateString() @IsNotEmpty() start: string
+  @IsDateString() @IsNotEmpty() end: string
+  @IsString() @IsNotEmpty() trade: string
+  @IsUUID() @IsNotEmpty() workplaceId: string
 }
 
 export class ClaimShiftDto {
-  @IsString() workerId: string
+  @IsUUID() @IsNotEmpty() workerId: string
 }

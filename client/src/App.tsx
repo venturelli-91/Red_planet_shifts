@@ -24,7 +24,9 @@ function Nav() {
 	const current = NAV.findIndex((n) => pathname.startsWith(n.path));
 
 	return (
-		<AppBar component="header" position="static">
+		<AppBar
+			component="header"
+			position="static">
 			<Toolbar>
 				<Typography
 					variant="h6"
