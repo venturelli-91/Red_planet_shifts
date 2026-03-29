@@ -1,19 +1,21 @@
 import { useState } from 'react'
 import {
+  Alert,
   Avatar,
   Box,
   Button,
   Card,
   CardContent,
   Chip,
-  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  Snackbar,
   TextField,
   Typography,
 } from '@mui/material'
+import { motion } from 'framer-motion'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { api } from '../api'
 
@@ -21,11 +23,45 @@ function initials(name: string) {
   return name.split(' ').map((n) => n[0]).join('').toUpperCase().slice(0, 2)
 }
 
+function WorkerCardSkeleton() {
+  return (
+    <Box
+      sx={{
+        borderRadius: 2,
+        border: '1px solid rgba(232,97,44,0.14)',
+        p: 3,
+        background: 'rgba(18,7,3,0.78)',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: 1.5,
+      }}
+    >
+      <Box sx={{ width: 56, height: 56, borderRadius: '50%', bgcolor: 'rgba(232,97,44,0.15)', animation: 'pulse 1.5s ease-in-out infinite' }} />
+      <Box sx={{ width: '60%', height: 16, borderRadius: 1, bgcolor: 'rgba(232,97,44,0.08)', animation: 'pulse 1.5s ease-in-out infinite' }} />
+      <Box sx={{ width: '40%', height: 20, borderRadius: 2, bgcolor: 'rgba(232,97,44,0.08)', animation: 'pulse 1.5s ease-in-out infinite' }} />
+    </Box>
+  )
+}
+
+const containerVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.07 } },
+}
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1] } },
+}
+
 export default function WorkersPage() {
   const qc = useQueryClient()
   const [open, setOpen] = useState(false)
   const [name, setName] = useState('')
   const [trade, setTrade] = useState('')
+  const [toast, setToast] = useState<{ open: boolean; message: string; severity: 'success' | 'error' }>({
+    open: false, message: '', severity: 'success',
+  })
 
   const { data: workers, isLoading } = useQuery({
     queryKey: ['workers'],
@@ -39,10 +75,10 @@ export default function WorkersPage() {
       setOpen(false)
       setName('')
       setTrade('')
+      setToast({ open: true, message: 'Worker added successfully!', severity: 'success' })
     },
+    onError: () => setToast({ open: true, message: 'Failed to add worker.', severity: 'error' }),
   })
-
-  if (isLoading) return <CircularProgress sx={{ m: 4 }} aria-label="Loading workers" />
 
   return (
     <Box>
@@ -50,32 +86,45 @@ export default function WorkersPage() {
         <Typography variant="h5" sx={{ color: 'text.primary', textShadow: '0 2px 12px rgba(0,0,0,0.8)' }}>
           Workers
         </Typography>
-        <Button variant="contained" size="small" onClick={() => setOpen(true)}>
-          Add worker
-        </Button>
+        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} transition={{ type: 'spring', stiffness: 400, damping: 17 }}>
+          <Button variant="contained" size="small" onClick={() => setOpen(true)}>
+            Add worker
+          </Button>
+        </motion.div>
       </Box>
 
-      {workers?.length === 0 ? (
+      {isLoading ? (
+        <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: 2 }}>
+          {[...Array(6)].map((_, i) => <WorkerCardSkeleton key={i} />)}
+        </Box>
+      ) : workers?.length === 0 ? (
         <Typography color="text.secondary">No workers yet.</Typography>
       ) : (
-        <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: 2 }}>
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: 16 }}
+        >
           {workers?.map((w) => (
-            <Card key={w.id}>
-              <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1.5, py: 3 }}>
-                <Avatar
-                  sx={{ bgcolor: 'primary.main', width: 56, height: 56, fontSize: '1.1rem', fontWeight: 700 }}
-                  aria-hidden="true"
-                >
-                  {initials(w.name)}
-                </Avatar>
-                <Box sx={{ textAlign: 'center' }}>
-                  <Typography variant="subtitle1">{w.name}</Typography>
-                  <Chip label={w.trade} size="small" variant="outlined" color="primary" sx={{ mt: 0.5 }} />
-                </Box>
-              </CardContent>
-            </Card>
+            <motion.div key={w.id} variants={cardVariants}>
+              <Card sx={{ height: '100%' }}>
+                <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1.5, py: 3 }}>
+                  <Avatar
+                    sx={{ bgcolor: 'primary.main', width: 56, height: 56, fontSize: '1.1rem', fontWeight: 700 }}
+                    aria-hidden="true"
+                  >
+                    {initials(w.name)}
+                  </Avatar>
+                  <Box sx={{ textAlign: 'center' }}>
+                    <Typography variant="subtitle1">{w.name}</Typography>
+                    <Chip label={w.trade} size="small" variant="outlined" color="primary" sx={{ mt: 0.5 }} />
+                  </Box>
+                </CardContent>
+              </Card>
+            </motion.div>
           ))}
-        </Box>
+        </motion.div>
       )}
 
       <Dialog
@@ -105,15 +154,32 @@ export default function WorkersPage() {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpen(false)}>Cancel</Button>
-          <Button
-            variant="contained"
-            disabled={!name || !trade || createWorker.isPending}
-            onClick={() => createWorker.mutate({ name, trade })}
-          >
-            Add
-          </Button>
+          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} transition={{ type: 'spring', stiffness: 400, damping: 17 }}>
+            <Button
+              variant="contained"
+              disabled={!name || !trade || createWorker.isPending}
+              onClick={() => createWorker.mutate({ name, trade })}
+            >
+              {createWorker.isPending ? 'Adding…' : 'Add'}
+            </Button>
+          </motion.div>
         </DialogActions>
       </Dialog>
+
+      <Snackbar
+        open={toast.open}
+        autoHideDuration={4000}
+        onClose={() => setToast((t) => ({ ...t, open: false }))}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert
+          severity={toast.severity}
+          onClose={() => setToast((t) => ({ ...t, open: false }))}
+          sx={{ width: '100%' }}
+        >
+          {toast.message}
+        </Alert>
+      </Snackbar>
     </Box>
   )
 }
