@@ -181,7 +181,11 @@ export default function WorkplacesPage() {
 				<Box
 					sx={{
 						display: "grid",
-						gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
+						gridTemplateColumns: {
+							xs: "1fr",
+							sm: "1fr 1fr",
+							md: "repeat(auto-fill, minmax(240px, 1fr))",
+						},
 						gap: 2,
 					}}>
 					{[...Array(4)].map((_, i) => (
@@ -191,14 +195,19 @@ export default function WorkplacesPage() {
 			) : workplaces?.length === 0 ? (
 				<Typography color="text.secondary">No workplaces yet.</Typography>
 			) : (
-				<motion.div
+				<Box
+					component={motion.div}
 					variants={containerVariants}
 					initial="hidden"
 					animate="visible"
-					style={{
+					sx={{
 						display: "grid",
-						gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
-						gap: 16,
+						gridTemplateColumns: {
+							xs: "1fr",
+							sm: "1fr 1fr",
+							md: "repeat(auto-fill, minmax(240px, 1fr))",
+						},
+						gap: 2,
 					}}>
 					{workplaces?.map((wp) => (
 						<motion.div
@@ -247,7 +256,7 @@ export default function WorkplacesPage() {
 							</Card>
 						</motion.div>
 					))}
-				</motion.div>
+				</Box>
 			)}
 
 			<Dialog

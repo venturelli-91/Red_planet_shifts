@@ -161,7 +161,11 @@ export default function WorkersPage() {
 				<Box
 					sx={{
 						display: "grid",
-						gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
+						gridTemplateColumns: {
+							xs: "1fr 1fr",
+							sm: "repeat(3, 1fr)",
+							md: "repeat(auto-fill, minmax(180px, 1fr))",
+						},
 						gap: 2,
 					}}>
 					{[...Array(6)].map((_, i) => (
@@ -171,14 +175,19 @@ export default function WorkersPage() {
 			) : workers?.length === 0 ? (
 				<Typography color="text.secondary">No workers yet.</Typography>
 			) : (
-				<motion.div
+				<Box
+					component={motion.div}
 					variants={containerVariants}
 					initial="hidden"
 					animate="visible"
-					style={{
+					sx={{
 						display: "grid",
-						gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
-						gap: 16,
+						gridTemplateColumns: {
+							xs: "1fr 1fr",
+							sm: "repeat(3, 1fr)",
+							md: "repeat(auto-fill, minmax(180px, 1fr))",
+						},
+						gap: 2,
 					}}>
 					{workers?.map((w) => (
 						<motion.div
@@ -218,7 +227,7 @@ export default function WorkersPage() {
 							</Card>
 						</motion.div>
 					))}
-				</motion.div>
+				</Box>
 			)}
 
 			<Dialog

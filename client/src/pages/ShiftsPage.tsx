@@ -232,7 +232,11 @@ export default function ShiftsPage() {
 				<Box
 					sx={{
 						display: "grid",
-						gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+						gridTemplateColumns: {
+							xs: "1fr",
+							sm: "1fr 1fr",
+							md: "repeat(auto-fill, minmax(280px, 1fr))",
+						},
 						gap: 2,
 					}}>
 					{[...Array(6)].map((_, i) => (
@@ -244,14 +248,19 @@ export default function ShiftsPage() {
 					{shifts?.length === 0 && (
 						<Typography color="text.secondary">No shifts yet.</Typography>
 					)}
-					<motion.div
+					<Box
+						component={motion.div}
 						variants={containerVariants}
 						initial="hidden"
 						animate="visible"
-						style={{
+						sx={{
 							display: "grid",
-							gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-							gap: 16,
+							gridTemplateColumns: {
+								xs: "1fr",
+								sm: "1fr 1fr",
+								md: "repeat(auto-fill, minmax(280px, 1fr))",
+							},
+							gap: 2,
 						}}>
 						{shifts?.map((shift) => {
 							const status = shiftStatus(shift.cancelled, shift.workerId);
@@ -376,7 +385,7 @@ export default function ShiftsPage() {
 								</motion.div>
 							);
 						})}
-					</motion.div>
+					</Box>
 				</>
 			)}
 
