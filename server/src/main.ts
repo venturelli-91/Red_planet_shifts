@@ -6,7 +6,9 @@ import { PrismaExceptionFilter } from "./prisma-exception.filter";
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
-	app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }));
+	app.useGlobalPipes(
+		new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }),
+	);
 	app.useGlobalFilters(new PrismaExceptionFilter());
 	app.enableCors();
 	await app.listen(3000);

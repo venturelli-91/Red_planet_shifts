@@ -4,16 +4,16 @@ A full-stack workforce management application for the Martian colony. Manage wor
 
 ## Stack
 
-| Layer | Technology |
-|-------|-----------|
-| Frontend | React 18 + Vite + TypeScript |
-| UI | Material UI v6 + Framer Motion |
-| State / Data | TanStack Query v5 |
-| Routing | React Router v6 |
-| Backend | NestJS 10 + TypeScript |
-| ORM | Prisma 6 |
-| Database | SQLite |
-| Testing | Vitest + Testing Library + MSW |
+| Layer        | Technology                     |
+| ------------ | ------------------------------ |
+| Frontend     | React 18 + Vite + TypeScript   |
+| UI           | Material UI v6 + Framer Motion |
+| State / Data | TanStack Query v5              |
+| Routing      | React Router v6                |
+| Backend      | NestJS 10 + TypeScript         |
+| ORM          | Prisma 6                       |
+| Database     | SQLite                         |
+| Testing      | Vitest + Testing Library + MSW |
 
 ## Prerequisites
 
@@ -53,33 +53,33 @@ The Vite dev server proxies all `/api` requests to `localhost:3000` automaticall
 
 ### Client (`cd client`)
 
-| Script | Description |
-|--------|-------------|
-| `npm run dev` | Start development server |
-| `npm run build` | Type-check and build for production |
-| `npm test` | Run all tests (Vitest, single run) |
-| `npm run test:watch` | Run tests in watch mode |
+| Script               | Description                         |
+| -------------------- | ----------------------------------- |
+| `npm run dev`        | Start development server            |
+| `npm run build`      | Type-check and build for production |
+| `npm test`           | Run all tests (Vitest, single run)  |
+| `npm run test:watch` | Run tests in watch mode             |
 
 ### Server (`cd server`)
 
-| Script | Description |
-|--------|-------------|
-| `npm run start:dev` | Start server with hot-reload |
-| `npm run build` | Compile TypeScript to `dist/` |
-| `npm start` | Run compiled production build |
+| Script              | Description                   |
+| ------------------- | ----------------------------- |
+| `npm run start:dev` | Start server with hot-reload  |
+| `npm run build`     | Compile TypeScript to `dist/` |
+| `npm start`         | Run compiled production build |
 
 ## API Routes
 
-| Method | Path | Description |
-|--------|------|-------------|
-| `GET` | `/workplaces` | List all workplaces |
-| `POST` | `/workplaces` | Create a workplace |
-| `GET` | `/workers` | List all workers |
-| `POST` | `/workers` | Create a worker |
-| `GET` | `/shifts` | List all shifts |
-| `POST` | `/shifts` | Create a shift |
-| `POST` | `/shifts/:id/claim` | Claim a shift for a worker |
-| `POST` | `/shifts/:id/cancel` | Cancel a shift |
+| Method | Path                 | Description                |
+| ------ | -------------------- | -------------------------- |
+| `GET`  | `/workplaces`        | List all workplaces        |
+| `POST` | `/workplaces`        | Create a workplace         |
+| `GET`  | `/workers`           | List all workers           |
+| `POST` | `/workers`           | Create a worker            |
+| `GET`  | `/shifts`            | List all shifts            |
+| `POST` | `/shifts`            | Create a shift             |
+| `POST` | `/shifts/:id/claim`  | Claim a shift for a worker |
+| `POST` | `/shifts/:id/cancel` | Cancel a shift             |
 
 ## Project Structure
 

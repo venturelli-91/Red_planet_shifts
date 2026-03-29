@@ -1,6 +1,0 @@
-{
-  "scripts": {
-    "start:topWorkplaces": "cd server && npx ts-node src/scripts/top-workplaces.ts",
-    "start:topWorkers": "cd server && npx ts-node src/scripts/top-workers.ts"
-  }
-}
