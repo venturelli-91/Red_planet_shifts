@@ -6,9 +6,34 @@
     <title>Red Planet Staffing</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+      .skip-to-main {
+        position: absolute;
+        left: -9999px;
+        top: auto;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+      }
+      .skip-to-main:focus {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: auto;
+        height: auto;
+        padding: 8px 16px;
+        background: #e8612c;
+        color: #fff;
+        font-weight: 600;
+        z-index: 9999;
+        outline: 3px solid #fff;
+        border-radius: 0 0 6px 0;
+      }
+    </style>
   </head>
   <body>
+    <a href="#main-content" class="skip-to-main">Skip to main content</a>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

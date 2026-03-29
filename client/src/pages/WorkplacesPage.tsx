@@ -22,6 +22,7 @@ export default function WorkplacesPage() {
 
   const [shiftOpen, setShiftOpen] = useState(false)
   const [selectedWorkplaceId, setSelectedWorkplaceId] = useState('')
+  const [selectedWorkplaceName, setSelectedWorkplaceName] = useState('')
   const [start, setStart] = useState('')
   const [end, setEnd] = useState('')
   const [trade, setTrade] = useState('')
@@ -56,7 +57,7 @@ export default function WorkplacesPage() {
     },
   })
 
-  if (isLoading) return <CircularProgress sx={{ m: 4 }} />
+  if (isLoading) return <CircularProgress sx={{ m: 4 }} aria-label="Loading workplaces" />
 
   return (
     <Box>
@@ -78,7 +79,7 @@ export default function WorkplacesPage() {
               <CardContent sx={{ pb: 1 }}>
                 <Typography variant="subtitle1">{wp.name}</Typography>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mt: 0.5, color: 'text.secondary' }}>
-                  <LocationOnIcon sx={{ fontSize: 15 }} />
+                  <LocationOnIcon sx={{ fontSize: 15 }} aria-hidden="true" />
                   <Typography variant="body2">{wp.address}</Typography>
                 </Box>
               </CardContent>
@@ -86,8 +87,10 @@ export default function WorkplacesPage() {
                 <Button
                   size="small"
                   variant="contained"
+                  aria-label={`Post shift at ${wp.name}`}
                   onClick={() => {
                     setSelectedWorkplaceId(wp.id)
+                    setSelectedWorkplaceName(wp.name)
                     setShiftOpen(true)
                   }}
                 >
@@ -99,14 +102,21 @@ export default function WorkplacesPage() {
         </Box>
       )}
 
-      <Dialog open={wpOpen} onClose={() => setWpOpen(false)} fullWidth maxWidth="xs">
-        <DialogTitle>Add a workplace</DialogTitle>
+      <Dialog
+        open={wpOpen}
+        onClose={() => setWpOpen(false)}
+        fullWidth
+        maxWidth="xs"
+        aria-labelledby="add-workplace-dialog-title"
+      >
+        <DialogTitle id="add-workplace-dialog-title">Add a workplace</DialogTitle>
         <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: '16px !important' }}>
           <TextField
             label="Name"
             value={wpName}
             onChange={(e) => setWpName(e.target.value)}
             size="small"
+            inputProps={{ 'aria-required': true }}
           />
           <TextField
             label="Address"
@@ -114,6 +124,7 @@ export default function WorkplacesPage() {
             onChange={(e) => setWpAddress(e.target.value)}
             placeholder="e.g. 1 Olympus Mons, Mars"
             size="small"
+            inputProps={{ 'aria-required': true }}
           />
         </DialogContent>
         <DialogActions>
@@ -128,8 +139,16 @@ export default function WorkplacesPage() {
         </DialogActions>
       </Dialog>
 
-      <Dialog open={shiftOpen} onClose={() => setShiftOpen(false)} fullWidth maxWidth="xs">
-        <DialogTitle>Post a shift</DialogTitle>
+      <Dialog
+        open={shiftOpen}
+        onClose={() => setShiftOpen(false)}
+        fullWidth
+        maxWidth="xs"
+        aria-labelledby="post-shift-dialog-title"
+      >
+        <DialogTitle id="post-shift-dialog-title">
+          Post a shift{selectedWorkplaceName ? ` at ${selectedWorkplaceName}` : ''}
+        </DialogTitle>
         <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: '16px !important' }}>
           <TextField
             label="Trade"
@@ -137,6 +156,7 @@ export default function WorkplacesPage() {
             onChange={(e) => setTrade(e.target.value)}
             placeholder="e.g. Welder"
             size="small"
+            inputProps={{ 'aria-required': true }}
           />
           <TextField
             label="Start time"
@@ -145,6 +165,7 @@ export default function WorkplacesPage() {
             onChange={(e) => setStart(e.target.value)}
             InputLabelProps={{ shrink: true }}
             size="small"
+            inputProps={{ 'aria-required': true }}
           />
           <TextField
             label="End time"
@@ -153,6 +174,7 @@ export default function WorkplacesPage() {
             onChange={(e) => setEnd(e.target.value)}
             InputLabelProps={{ shrink: true }}
             size="small"
+            inputProps={{ 'aria-required': true }}
           />
         </DialogContent>
         <DialogActions>

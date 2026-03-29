@@ -42,7 +42,7 @@ export default function WorkersPage() {
     },
   })
 
-  if (isLoading) return <CircularProgress sx={{ m: 4 }} />
+  if (isLoading) return <CircularProgress sx={{ m: 4 }} aria-label="Loading workers" />
 
   return (
     <Box>
@@ -62,7 +62,10 @@ export default function WorkersPage() {
           {workers?.map((w) => (
             <Card key={w.id}>
               <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1.5, py: 3 }}>
-                <Avatar sx={{ bgcolor: 'primary.main', width: 56, height: 56, fontSize: '1.1rem', fontWeight: 700 }}>
+                <Avatar
+                  sx={{ bgcolor: 'primary.main', width: 56, height: 56, fontSize: '1.1rem', fontWeight: 700 }}
+                  aria-hidden="true"
+                >
                   {initials(w.name)}
                 </Avatar>
                 <Box sx={{ textAlign: 'center' }}>
@@ -75,14 +78,21 @@ export default function WorkersPage() {
         </Box>
       )}
 
-      <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="xs">
-        <DialogTitle>Add a worker</DialogTitle>
+      <Dialog
+        open={open}
+        onClose={() => setOpen(false)}
+        fullWidth
+        maxWidth="xs"
+        aria-labelledby="add-worker-dialog-title"
+      >
+        <DialogTitle id="add-worker-dialog-title">Add a worker</DialogTitle>
         <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: '16px !important' }}>
           <TextField
             label="Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             size="small"
+            inputProps={{ 'aria-required': true }}
           />
           <TextField
             label="Trade"
@@ -90,6 +100,7 @@ export default function WorkersPage() {
             onChange={(e) => setTrade(e.target.value)}
             placeholder="e.g. Welder"
             size="small"
+            inputProps={{ 'aria-required': true }}
           />
         </DialogContent>
         <DialogActions>

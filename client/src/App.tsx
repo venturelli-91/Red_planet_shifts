@@ -24,7 +24,7 @@ function Nav() {
 	const current = NAV.findIndex((n) => pathname.startsWith(n.path));
 
 	return (
-		<AppBar position="static">
+		<AppBar component="header" position="static">
 			<Toolbar>
 				<Typography
 					variant="h6"
@@ -34,13 +34,15 @@ function Nav() {
 				<Tabs
 					value={current === -1 ? 0 : current}
 					textColor="inherit"
-					indicatorColor="secondary">
-					{NAV.map((n) => (
+					indicatorColor="secondary"
+					aria-label="Main navigation">
+					{NAV.map((n, i) => (
 						<Tab
 							key={n.path}
 							label={n.label}
 							component={Link}
 							to={n.path}
+							aria-current={current === i ? "page" : undefined}
 						/>
 					))}
 				</Tabs>
@@ -54,6 +56,8 @@ export default function App() {
 		<BrowserRouter>
 			<Nav />
 			<Container
+				component="main"
+				id="main-content"
 				maxWidth="lg"
 				sx={{ mt: 4, pb: 4 }}>
 				<Box sx={{ p: 1 }}>

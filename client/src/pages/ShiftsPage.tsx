@@ -57,7 +57,7 @@ export default function ShiftsPage() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ['shifts'] }),
   })
 
-  if (isLoading) return <CircularProgress sx={{ m: 4 }} />
+  if (isLoading) return <CircularProgress sx={{ m: 4 }} aria-label="Loading shifts" />
 
   return (
     <Box>
@@ -82,23 +82,23 @@ export default function ShiftsPage() {
                   {shift.workplace?.name ?? '—'}
                 </Typography>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mt: 1, color: 'text.secondary' }}>
-                  <AccessTimeIcon sx={{ fontSize: 15 }} />
+                  <AccessTimeIcon sx={{ fontSize: 15 }} aria-hidden="true" />
                   <Typography variant="body2">
                     {fmt(shift.start)} → {fmt(shift.end)}
                   </Typography>
                 </Box>
                 <Divider sx={{ my: 1.5 }} />
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, color: 'text.secondary' }}>
-                  <PersonIcon sx={{ fontSize: 15 }} />
+                  <PersonIcon sx={{ fontSize: 15 }} aria-hidden="true" />
                   <Typography variant="body2">
                     {shift.worker?.name ?? 'Unassigned'}
                   </Typography>
                 </Box>
               </CardContent>
 
-              {(!shift.cancelled) && (
+              {shift.cancelled ? null : (
                 <CardActions sx={{ pt: 0, flexWrap: 'wrap', gap: 0.5 }}>
-                  {!shift.workerId && (
+                  {!shift.workerId ? (
                     claimingId === shift.id ? (
                       eligible.length === 0 ? (
                         <Typography variant="caption" color="text.secondary" sx={{ px: 1 }}>
@@ -111,24 +111,30 @@ export default function ShiftsPage() {
                             size="small"
                             variant="outlined"
                             onClick={() => claim.mutate({ shiftId: shift.id, workerId: w.id })}
+                            aria-label={`Assign ${w.name} to shift at ${shift.workplace?.name ?? 'this workplace'}`}
                           >
                             {w.name}
                           </Button>
                         ))
                       )
                     ) : (
-                      <Button size="small" variant="contained" onClick={() => setClaimingId(shift.id)}>
+                      <Button
+                        size="small"
+                        variant="contained"
+                        onClick={() => setClaimingId(shift.id)}
+                        aria-label={`Claim shift at ${shift.workplace?.name ?? 'this workplace'}`}
+                      >
                         Claim
                       </Button>
                     )
-                  )}
-                  {shift.workerId && (
+                  ) : (
                     <Button
                       size="small"
                       color="error"
                       variant="outlined"
                       onClick={() => cancel.mutate(shift.id)}
                       disabled={cancel.isPending}
+                      aria-label={`Cancel shift at ${shift.workplace?.name ?? 'this workplace'}`}
                     >
                       Cancel
                     </Button>
